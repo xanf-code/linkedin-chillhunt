@@ -205,7 +205,7 @@ Provide nothing but the search string in the response`;
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer",
+            Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
           },
           body: JSON.stringify(payload),
         }

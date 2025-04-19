@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChillHunt</title>
+    <link rel="stylesheet" href="output.css" />
+    <style>
+      body {
+        width: 360px;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      /* Toggle switch styles */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: #2563eb;
+      }
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+
+      /* Blocked companies list styles */
+      .blocked-companies-list {
+        max-height: 150px;
+        overflow-y: auto;
+        margin-top: 8px;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+      }
+
+      .blocked-company-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .blocked-company-item:last-child {
+        border-bottom: none;
+      }
+
+      .company-name {
+        font-size: 0.875rem;
+        color: #374151;
+      }
+
+      .remove-company-btn {
+        background-color: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        padding: 2px 6px;
+        font-size: 0.75rem;
+        cursor: pointer;
+      }
+
+      .remove-company-btn:hover {
+        background-color: #dc2626;
+      }
+
+      .no-companies-message {
+        text-align: center;
+        padding: 12px;
+        color: #6b7280;
+        font-size: 0.875rem;
+      }
+
+      .blocked-companies-section {
+        margin-top: 16px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 16px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .collapsed {
+        display: none;
+      }
+
+      .toggle-section-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.25rem;
+        color: #6b7280;
+      }
+
+      /* AI Generate button styles */
+      .ai-button {
+        width: 100%;
+        background-color: #10b981;
+        color: white;
+        font-medium: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.2s;
+        margin-top: 0.5rem;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        height: 2.5rem;
+      }
+
+      .ai-button:hover {
+        background-color: #059669;
+      }
+
+      .ai-button-container {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="">
+    <div class="bg-white p-4">
+      <div class="flex justify-between items-center py-2">
+        <h1 class="text-xl font-bold text-blue-600">ChillHunt</h1>
+        <div class="flex">
+          <a
+            href="https://www.linkedin.com/in/darshanaswath/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="#0A66C2"
+            >
+              <path
+                d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="https://github.com/xanf-code"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="#24292F"
+            >
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Domain Selection -->
+        <div>
+          <label
+            for="domain-select"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Domain</label
+          >
+          <select
+            id="domain-select"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="custom">Custom Query</option>
+            <option value="software">Software Development</option>
+            <option value="devops">DevOps</option>
+            <option value="product">Product Management</option>
+            <option value="data">Data Science</option>
+            <option value="security">Cybersecurity</option>
+            <option value="ux">UX/UI Design</option>
+            <option value="askAI">Ask AI</option>
+          </select>
+        </div>
+
+        <!-- Job Title/Query Input -->
+        <div>
+          <label
+            id="search-query-label"
+            for="job-title"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Search Query</label
+          >
+          <textarea
+            id="job-title"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 h-24 text-sm"
+            placeholder="Enter search terms or select a domain above"
+          ></textarea>
+          <p id="query-helper" class="text-xs text-gray-500 mt-1">
+            Select a domain or enter your own search query
+          </p>
+
+          <!-- AI Generate Button (hidden by default) -->
+          <div id="ai-button-container" class="ai-button-container">
+            <button id="generate-ai-button" class="ai-button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2a8 8 0 0 0-8 8c0 5 6 10 8 10s8-5 8-10a8 8 0 0 0-8-8Z"
+                ></path>
+                <path d="M7 11.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                <path d="M17 11.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                <path d="M12 15a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2Z"></path>
+              </svg>
+              Generate with AI
+            </button>
+          </div>
+        </div>
+
+        <!-- Location Input -->
+        <div>
+          <label
+            for="location"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Location</label
+          >
+          <input
+            type="text"
+            id="location"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder="e.g. New York, NY"
+          />
+        </div>
+
+        <!-- Time Input (minutes) -->
+        <div>
+          <div class="flex items-center mb-1">
+            <label for="time-minutes" class="text-sm font-medium text-gray-700">
+              Time (minutes)
+            </label>
+            <span
+              id="time-hours-display"
+              class="ml-2 text-sm text-gray-500"
+            ></span>
+          </div>
+          <input
+            type="number"
+            id="time-minutes"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder="e.g. 30"
+            min="0"
+          />
+        </div>
+
+        <!-- Filters Section -->
+        <div class="border-t pt-3">
+          <h2 class="text-sm font-bold text-gray-700 mb-2">Filters</h2>
+
+          <!-- Hide Promoted Toggle -->
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm text-gray-700">Hide Promoted Jobs</span>
+            <label class="switch">
+              <input type="checkbox" id="hide-promoted-toggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Hide Viewed Toggle -->
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm text-gray-700">Hide Viewed Jobs</span>
+            <label class="switch">
+              <input type="checkbox" id="hide-viewed-toggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Hide Easy Apply Toggle -->
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-700">Hide Easy Apply</span>
+            <label class="switch">
+              <input type="checkbox" id="hide-easy-apply-toggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Blocked Companies Section -->
+        <div class="blocked-companies-section">
+          <div class="section-header">
+            <h2 class="text-sm font-bold text-gray-700">Blocked Companies</h2>
+            <button id="toggle-blocked-section" class="toggle-section-btn">
+              ▼
+            </button>
+          </div>
+
+          <div id="blocked-companies-content">
+            <div id="blocked-companies-list" class="blocked-companies-list">
+              <!-- Company list will be populated here by JavaScript -->
+              <div class="no-companies-message">No companies blocked yet</div>
+            </div>
+
+            <button
+              id="clear-all-companies"
+              class="w-full mt-2 bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm"
+            >
+              Clear All Blocked Companies
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <button
+          id="search-button"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Search Jobs
+        </button>
+      </div>
+
+      <div id="status" class="mt-4 text-sm text-gray-600"></div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
