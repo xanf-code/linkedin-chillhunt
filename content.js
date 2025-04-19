@@ -27,53 +27,65 @@ window.toggleLinkedInJobsHelperDebug = function () {
 
 function addBlockButtons() {
   const jobCards = document.querySelectorAll(
-    "li.ember-view.occludable-update, li.scaffold-layout__list-item"
+    "li.ember-view.occludable-update[data-occludable-job-id], li.scaffold-layout__list-item[data-occludable-job-id]"
   );
 
   jobCards.forEach((card, index) => {
     try {
-      if (card.querySelector(".chill-hunt-block-btn")) {
+      if (card.querySelector(".ch-block-btn")) {
         return;
       }
 
-      const companyElement = card.querySelector(
-        ".artdeco-entity-lockup__subtitle"
-      );
+      const companyElement =
+        card.querySelector(".artdeco-entity-lockup__subtitle") ||
+        card.querySelector(".job-card-container__company-name") ||
+        card.querySelector("[data-test-job-card-company-name]");
+
       if (!companyElement) return;
 
       const companyName = companyElement.textContent.trim();
       if (!companyName) return;
 
       const blockButton = document.createElement("button");
-      blockButton.className = "chill-hunt-block-btn";
+      blockButton.className = "ch-block-btn";
       blockButton.setAttribute("aria-label", `Block ${companyName}`);
       blockButton.setAttribute("type", "button");
 
       blockButton.style.cssText = `
-        position: absolute !important;
-        top: 8px !important;
-        right: 35px !important;
-        z-index: 9999 !important;
-        min-width: 32px !important;
-        height: 32px !important;
-        border-radius: 50% !important;
-        border: 1px solid rgba(0,0,0,0.15) !important;
-        cursor: pointer !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        padding: 0 !important;
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        z-index: 9999;
+        width: 32px;
+        height: 32px;
+        background-color: #ff5c5c;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.9;
+        transition: all 0.2s ease;
       `;
 
       blockButton.innerHTML = `
-        <svg xmlns="http:
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
         </svg>
       `;
+
+      blockButton.onmouseover = function () {
+        this.style.opacity = "1";
+        this.style.transform = "scale(1.1)";
+      };
+
+      blockButton.onmouseout = function () {
+        this.style.opacity = "0.9";
+        this.style.transform = "scale(1)";
+      };
 
       blockButton.addEventListener("click", (e) => {
         e.preventDefault();
@@ -81,7 +93,9 @@ function addBlockButtons() {
         blockCompany(companyName, card);
       });
 
-      card.style.position = "relative";
+      if (window.getComputedStyle(card).position === "static") {
+        card.style.position = "relative";
+      }
 
       card.appendChild(blockButton);
       console.log(`Added block button for ${companyName} to card ${index}`);
