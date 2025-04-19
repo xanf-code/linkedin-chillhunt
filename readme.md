@@ -1,8 +1,8 @@
 # ChillHunt
 
-| ![ChillHunt Image 1](./images/sc1.png) | ![ChillHunt Image 2](./images/sc2.png) |
-| :------------------------------------: | :------------------------------------: |
-|             ChillHunt SC 1             |             ChillHunt SC 2             |
+| ![ChillHunt Image 1](./images/sc1.png) | ![ChillHunt Image 2](./images/sc2.png) | ![ChillHunt Image 3](./images/sc3.png) |
+| :------------------------------------: | :------------------------------------: | :------------------------------------: |
+|           ChillHunt Queries            |           ChillHunt Filters            |            ChillHunt Ask AI            |
 
 Hey there! So I made this Chrome extension because I was tired of wasting time scrolling through LinkedIn's job spam. It helps cut through the noise and makes job hunting way less of a headache.
 
@@ -104,12 +104,18 @@ npm run build
 
 ```
 chillhunt/
-├── manifest.json    # Extension config
-├── popup.html       # The popup UI
-├── popup.js         # Makes the popup work
-├── content.js       # Handles LinkedIn page injection
-├── icons/           # Extension icons
-└── tailwind.css     # Makes it look good
+├── .env            # API key stored here (not committed)
+├── .gitignore
+├── package.json
+├── webpack.config.js
+├── dist/           # Built files go here (generated)
+└── src/
+    ├── content.js
+    ├── popup.js
+    ├── popup.html
+    ├── manifest.json
+    └── icons/
+        └── icon.png
 ```
 
 ## Privacy Stuff

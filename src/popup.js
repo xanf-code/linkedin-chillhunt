@@ -261,7 +261,6 @@ Provide nothing but the search string in the response`;
     const domain = domainSelect.value;
 
     if (domain === "askAI") {
-      // Handle Ask AI option
       searchQueryLabel.textContent = "Ask ChillHuntAI";
       jobTitleInput.value = "";
       jobTitleInput.placeholder = "(Ex: Backend Java Software internship)";
@@ -269,7 +268,6 @@ Provide nothing but the search string in the response`;
       queryHelper.textContent = "";
       aiButtonContainer.style.display = "block";
     } else if (domain === "custom") {
-      // Handle Custom Query option
       searchQueryLabel.textContent = "Search Query";
       jobTitleInput.value = "";
       jobTitleInput.placeholder = "Enter your custom search query";
@@ -277,7 +275,6 @@ Provide nothing but the search string in the response`;
       queryHelper.textContent = "Enter your custom search terms";
       aiButtonContainer.style.display = "none";
     } else {
-      // Handle predefined domains
       searchQueryLabel.textContent = "Search Query";
       jobTitleInput.value = domainQueries[domain];
       jobTitleInput.disabled = true;
@@ -288,7 +285,6 @@ Provide nothing but the search string in the response`;
     }
   });
 
-  // Add event listener for the AI generate button
   generateAiButton.addEventListener("click", generateAIQuery);
 
   searchButton.addEventListener("click", function () {
