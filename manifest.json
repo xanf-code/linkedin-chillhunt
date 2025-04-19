@@ -22,10 +22,8 @@
   "host_permissions": ["https://*.linkedin.com/*"],
   "content_scripts": [
     {
-      "matches": [
-        "https://*.linkedin.com/jobs*",
-        "https://*.linkedin.com/*/jobs*"
-      ],
+      "_comment": "work around for injecting linkedin scripts on startup, later move to observe on mutate",
+      "matches": ["https://*.linkedin.com/*", "https://*.linkedin.com/*/jobs*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }
